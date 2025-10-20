@@ -2,20 +2,22 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
+    [SerializeField] private GameObject collectParticlePrefab;
+
     private void OnTriggerEnter(Collider other)
     {
-        // Проверяем, что в триггер вошёл объект с тегом "Player"
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Игрок собрал монету!");
-
-            // Уведомляем менеджер монет
             if (CoinManager.Instance != null)
             {
                 CoinManager.Instance.AddCoin();
             }
 
-            // Уничтожаем объект монеты
+            if (collectParticlePrefab != null)
+            {
+                Instantiate(collectParticlePrefab, transform.position, Quaternion.identity);
+            }
+
             Destroy(gameObject);
         }
     }
